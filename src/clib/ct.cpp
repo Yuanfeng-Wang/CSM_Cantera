@@ -22,6 +22,7 @@
 #include "Cabinet.h"
 #include "cantera/kinetics/InterfaceKinetics.h"
 #include "cantera/thermo/PureFluidPhase.h"
+#include "cantera/thermo/MixtureFugacityTP.h"
 
 using namespace std;
 using namespace Cantera;
@@ -730,7 +731,7 @@ extern "C" {
     double th_critTemperature(int n)
     {
         try {
-            return purefluid(n)->critTemperature();
+            return ThermoCabinet::item(n).critTemperature();
         } catch (...) {
             return handleAllExceptions(DERR, DERR);
         }
@@ -739,7 +740,7 @@ extern "C" {
     double th_critPressure(int n)
     {
         try {
-            return purefluid(n)->critPressure();
+            return ThermoCabinet::item(n).critPressure();
         } catch (...) {
             return handleAllExceptions(DERR, DERR);
         }
@@ -748,7 +749,7 @@ extern "C" {
     double th_critDensity(int n)
     {
         try {
-            return purefluid(n)->critDensity();
+            return ThermoCabinet::item(n).critDensity();
         } catch (...) {
             return handleAllExceptions(DERR, DERR);
         }
