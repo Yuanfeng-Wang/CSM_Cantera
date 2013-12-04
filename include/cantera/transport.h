@@ -14,4 +14,5 @@
 #include "transport/MultiTransport.h"
 #include "transport/MixTransport.h"
 #include "transport/LiquidTransport.h"
+#include "transport/HighPressureGasTransport.h"
 #endif

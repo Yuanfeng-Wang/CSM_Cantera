@@ -9,6 +9,7 @@
 // known transport models
 #include "cantera/transport/MultiTransport.h"
 #include "cantera/transport/MixTransport.h"
+#include "cantera/transport/HighPressureGasTransport.h"
 #include "cantera/transport/SolidTransport.h"
 #include "cantera/transport/DustyGasTransport.h"
 #include "cantera/transport/SimpleTransport.h"
@@ -202,6 +203,7 @@ TransportFactory::TransportFactory() :
     m_models["Aqueous"] = cAqueousTransport;
     m_models["Simple"] = cSimpleTransport;
     m_models["User"] = cUserTransport;
+    m_models["HighP"] = cHighP;
     m_models["None"] = None;
     //m_models["Radiative"] = cRadiative;
 
@@ -370,6 +372,10 @@ Transport* TransportFactory::newTransport(std::string transportModel,
     case CK_MixtureAveraged:
         tr = new MixTransport;
         initTransport(tr, phase, CK_Mode, log_level);
+        break;
+    case cHighP:
+        tr = new HighPressureGasTransport;
+        initTransport(tr, phase, 0, log_level);
         break;
     case cSolidTransport:
         tr = new SolidTransport;
@@ -1238,7 +1244,11 @@ void TransportFactory::fitProperties(GasTransportParams& tr,
             t = tr.tmin + dt*n;
 
             tr.thermo->setTemperature(t);
-            cp_R = ((IdealGasPhase*)tr.thermo)->cp_R_ref()[k];
+            //cp_R = ((IdealGasPhase*)tr.thermo)->cp_R_ref()[k];
+            vector_fp cp_R_all(tr.thermo->nSpecies());
+            tr.thermo->getCp_R_ref(&cp_R_all[0]);
+            cp_R = cp_R_all[k];
+
 
             tstar = Boltzmann * t/ tr.eps[k];
             sqrt_T = sqrt(t);

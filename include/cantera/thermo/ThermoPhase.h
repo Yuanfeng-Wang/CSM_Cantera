@@ -1243,6 +1243,18 @@ public:
         err("critPressure");
         return -1.0;
     }
+    
+    /// Critical volume (m3/kmol).
+    virtual doublereal critVolume() const {
+        err("critVolume");
+        return -1.0;
+    }
+    
+    /// Critical compressibility (unitless).
+    virtual doublereal critCompressibility() const {
+        err("critCompressibility");
+        return -1.0;
+    }
 
     /// Critical density (kg/m3).
     virtual doublereal critDensity() const {
@@ -1264,7 +1276,7 @@ public:
     /*!
      * @param p Pressure (Pa)
      */
-    virtual doublereal satTemperature(doublereal p) const {
+    virtual doublereal satTemperature(doublereal p)  {
         err("satTemperature");
         return -1.0;
     }
@@ -1273,7 +1285,7 @@ public:
     /*!
      * @param t Temperature (Kelvin)
      */
-    virtual doublereal satPressure(doublereal t) const {
+    virtual doublereal satPressure(doublereal t)  {
         err("satPressure");
         return -1.0;
     }

@@ -57,7 +57,7 @@ RedlichKwongMFTP::RedlichKwongMFTP() :
     Vroot_[2] = 0.0;
 }
 //====================================================================================================================
-RedlichKwongMFTP::RedlichKwongMFTP(std::string infile, std::string id) :
+RedlichKwongMFTP::RedlichKwongMFTP(const std::string& infile, std::string id) :
     MixtureFugacityTP(),
     m_standardMixingRules(0),
     m_formTempParam(0),
@@ -92,7 +92,7 @@ RedlichKwongMFTP::RedlichKwongMFTP(std::string infile, std::string id) :
     importPhase(*xphase, this);
 }
 //====================================================================================================================
-RedlichKwongMFTP::RedlichKwongMFTP(XML_Node& phaseRefRoot, std::string id) :
+RedlichKwongMFTP::RedlichKwongMFTP(XML_Node& phaseRefRoot, const std::string& id) :
     MixtureFugacityTP(),
     m_standardMixingRules(0),
     m_formTempParam(0),
@@ -252,8 +252,9 @@ RedlichKwongMFTP::~RedlichKwongMFTP()
  */
 ThermoPhase* RedlichKwongMFTP::duplMyselfAsThermoPhase() const
 {
-    RedlichKwongMFTP* vptp = new RedlichKwongMFTP(*this);
-    return (ThermoPhase*) vptp;
+    //RedlichKwongMFTP* vptp = new RedlichKwongMFTP(*this);
+    //return (ThermoPhase*) vptp;
+    return new RedlichKwongMFTP(*this);
 }
 //====================================================================================================================
 int RedlichKwongMFTP::eosType() const

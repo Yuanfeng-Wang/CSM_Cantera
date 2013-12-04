@@ -221,8 +221,6 @@ protected:
     //! conductivity and thermal diffusion coefficients.
     void updateThermal_T();
 
-private:
-
     doublereal m_thermal_tlast;
 
     doublereal m_tmin;
@@ -254,10 +252,12 @@ private:
     vector_fp   m_alpha;
     vector_fp   m_dipoleDiag;
 
-    vector_fp  m_sqrt_eps_k;
+    vector_fp   m_sqrt_eps_k;
     DenseMatrix m_log_eps_k;
-    vector_fp  m_frot_298;
-    vector_fp  m_rotrelax;
+    vector_fp   m_frot_298;
+    vector_fp   m_rotrelax;
+    vector_fp   m_w_ac;
+    DenseMatrix m_dipole;
 
     doublereal m_lambda;
 

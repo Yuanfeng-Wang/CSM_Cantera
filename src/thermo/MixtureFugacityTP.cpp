@@ -1124,6 +1124,14 @@ doublereal MixtureFugacityTP::densSpinodalGas() const
  *        and the liquid molar volumes as the fundamental unknowns.
  *
  */
+    
+doublereal MixtureFugacityTP::satPressure(doublereal TKelvin)
+{
+    doublereal molarVolGas;
+    doublereal molarVolLiquid;
+    return calculatePsat(TKelvin, molarVolGas, molarVolLiquid);
+}
+
 doublereal MixtureFugacityTP::calculatePsat(doublereal TKelvin, doublereal& molarVolGas,
         doublereal& molarVolLiquid)
 {

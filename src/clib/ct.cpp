@@ -767,7 +767,7 @@ extern "C" {
     double th_satTemperature(int n, double p)
     {
         try {
-            return purefluid(n)->satTemperature(p);
+            return ThermoCabinet::item(n).satTemperature(p);
         } catch (...) {
             return handleAllExceptions(DERR, DERR);
         }
@@ -776,7 +776,7 @@ extern "C" {
     double th_satPressure(int n, double t)
     {
         try {
-            return purefluid(n)->satPressure(t);
+            return ThermoCabinet::item(n).satPressure(t);
         } catch (...) {
             return handleAllExceptions(DERR, DERR);
         }
@@ -801,7 +801,7 @@ extern "C" {
             return handleAllExceptions(-1, ERR);
         }
     }
-
+    
     //-------------- Kinetics ------------------//
 
     size_t newKineticsFromXML(int mxml, int iphase,

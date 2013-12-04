@@ -274,6 +274,14 @@ public:
      *  Length nsp * nsp .This is a symmetric matrix
      */
     DenseMatrix delta;
+    
+    //! Pitzer acentric factor
+    /*!
+     * Length is the number of species in the phase.
+     * Unitless
+     */
+    vector_fp w_ac;
+
 };
 //====================================================================================================================
 } // End of namespace Cantera

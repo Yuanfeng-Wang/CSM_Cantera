@@ -21,7 +21,7 @@ namespace Cantera
 {
 
 class XML_Node;
-class PDSS;
+//class PDSS;
 
 /*!
   * @name CONSTANTS - Models for the Standard State of IdealSolnPhase's
@@ -63,7 +63,7 @@ public:
      *                  to set up the object
      * @param id        ID of the phase in the input file. Defaults to the empty string.
      */
-    RedlichKwongMFTP(std::string infile, std::string id="");
+    RedlichKwongMFTP(const std::string& infile, std::string id="");
 
     //! Construct and initialize a RedlichKwongMFTP ThermoPhase object
     //! directly from an XML database
@@ -71,7 +71,7 @@ public:
      *  @param phaseRef XML phase node containing the description of the phase
      *  @param id       id attribute containing the name of the phase.  (default is the empty string)
      */
-    RedlichKwongMFTP(XML_Node& phaseRef, std::string id = "");
+    RedlichKwongMFTP(XML_Node& phaseRef, const std::string& id = "");
 
     //!  This is a special constructor, used to replicate test problems
     //!  during the initial verification of the object
@@ -653,7 +653,6 @@ public:
      */
     virtual doublereal densityCalc(doublereal TKelvin, doublereal pressure, int phase, doublereal rhoguess);
 
-public:
     //! Return the value of the density at the liquid spinodal point (on the liquid side)
     //! for the current temperature.
     /*!

@@ -104,6 +104,7 @@ bool MultiTransport::initGas(GasTransportParams& tr)
     m_diam       = tr.diam;
     m_eps        = tr.eps;
     m_alpha      = tr.alpha;
+    m_dipole     = tr.dipole;
     m_dipoleDiag.resize(m_nsp);
     for (size_t i = 0; i < m_nsp; i++) {
         m_dipoleDiag[i] = tr.dipole(i,i);
