@@ -322,8 +322,14 @@ doublereal RedlichKwongMFTP::cp_mole() const
 /// Molar heat capacity at constant volume. Units: J/kmol/K.
 doublereal RedlichKwongMFTP::cv_mole() const
 {
-    throw CanteraError("", "unimplemented");
-    return cp_mole() - GasConstant;
+    // Cv_mole calculation from Chen and Zan, Cryogenics 33(9), 1993.
+    _updateReferenceStateThermo();
+    doublereal TKelvin = temperature();
+    doublereal sqt = sqrt(TKelvin);
+    doublereal mv = molarVolume();
+    doublereal vpb = mv + m_b_current;
+    doublereal cvref = GasConstant * (mean_X(DATA_PTR(m_cp0_R)) - 1);
+    return (cvref - 0.75*m_a_current*log(mv/vpb)/(m_b_current*sqt*TKelvin));
 }
 //====================================================================================================================
 // Return the thermodynamic pressure (Pa).
