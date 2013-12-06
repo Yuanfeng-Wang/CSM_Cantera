@@ -36,7 +36,8 @@ struct GasTransportData {
         diameter(-1.0),
         dipoleMoment(-1.0),
         polarizability(-1.0),
-        rotRelaxNumber(-1.0) {
+        rotRelaxNumber(-1.0),
+        w_ac(-1.0){
     }
 
     //! gas phase species name
@@ -78,6 +79,9 @@ struct GasTransportData {
      *  Number of collisions it takes to equilibrate the rotational dofs with the temperature
      */
     doublereal rotRelaxNumber;
+    
+    // Pitzer's acentric factor:
+    doublereal w_ac;
 };
 
 //====================================================================================================================

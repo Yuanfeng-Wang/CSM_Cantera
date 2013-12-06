@@ -209,6 +209,18 @@ public:
      */
     DEPRECATED(struct GasTransportData getGasTransportData(int k));
 
+public:
+    
+    vector_fp   m_zrot;
+    vector_fp   m_crot;
+    vector_fp   m_cinternal;
+    vector_fp   m_eps;
+    vector_fp   m_alpha;
+    vector_fp   m_dipoleDiag;
+    vector_fp   m_w_ac;
+    DenseMatrix m_dipole;
+
+
 protected:
 
     //! Update basic temperature-dependent quantities if the temperature has changed.
@@ -245,19 +257,11 @@ protected:
     //! Dense matrix for omega22
     DenseMatrix          m_om22;
 
-    vector_fp   m_zrot;
-    vector_fp   m_crot;
-    vector_fp   m_cinternal;
-    vector_fp   m_eps;
-    vector_fp   m_alpha;
-    vector_fp   m_dipoleDiag;
 
     vector_fp   m_sqrt_eps_k;
     DenseMatrix m_log_eps_k;
     vector_fp   m_frot_298;
     vector_fp   m_rotrelax;
-    vector_fp   m_w_ac;
-    DenseMatrix m_dipole;
 
     doublereal m_lambda;
 

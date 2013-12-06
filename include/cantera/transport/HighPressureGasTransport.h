@@ -53,7 +53,7 @@ public:
      */
     virtual void getThermalDiffCoeffs(doublereal* const dt);
     
-    virtual doublereal thermalConductivity();
+    virtual double thermalConductivity();
     
     /*! Returns the matrix of binary diffusion coefficients
      *

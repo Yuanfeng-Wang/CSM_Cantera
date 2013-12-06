@@ -41,7 +41,7 @@ bool HighPressureGasTransport::initGas(GasTransportParams& tr)
     return true;
 }
 
-doublereal HighPressureGasTransport::thermalConductivity()
+double HighPressureGasTransport::thermalConductivity()
 {
     //  Method of Ely and Hanley:
     update_T();
@@ -64,10 +64,11 @@ doublereal HighPressureGasTransport::thermalConductivity()
     for (size_t i = 0; i < m_nsp; i++) {
         doublereal Tc_i = Tcrit_i(i);
         doublereal Vc_i = Vcrit_i(i);
-        doublereal T_r = m_temp/Tc_i;
+        doublereal T_r = m_thermo->temperature()/Tc_i;
         doublereal V_r = V_k[i]/Vc_i;
         doublereal T_p = std::min(T_r,2.0);
         doublereal V_p = std::max(0.5,std::min(V_r,2.0));
+    
         // Calculate variables for density-independent component:
         doublereal theta_p = 1.0 + (m_w_ac[i] - 0.011)*(0.56553 \
             - 0.86276*log(T_p) - 0.69852/T_p);
@@ -126,7 +127,7 @@ doublereal HighPressureGasTransport::thermalConductivity()
                 *sqrt(rho_0)*(0.3594685 + 69.79841/T_0 - 872.8833*pow(T_0,-2))) - 1.)*1e-3;
     doublereal H_m = sqrt(f_m*16.04/mw_m)*pow(h_m,-2./3.);
     doublereal Lstar_m = H_m*(L_1m + L_2m + L_3m);
-    
+
     return Lprime_m + Lstar_m;
     
 }
