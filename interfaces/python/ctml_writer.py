@@ -2170,6 +2170,8 @@ class RedlichKwongMFTP(phase):
                  name = '',
                  elements = '',
                  species = '',
+                 reactions = 'none',
+                 kinetics = 'GasKinetics',
                  initial_state = None,
                  activity_coefficients = None,
                  transport = 'None',
