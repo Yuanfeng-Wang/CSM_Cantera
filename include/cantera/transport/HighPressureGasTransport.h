@@ -80,7 +80,7 @@ public:
     
     virtual doublereal FQ_i(doublereal Q, doublereal Tr, doublereal MW);
     
-    virtual void setPcorr(doublereal Pr, std::vector<double>& PcorrParams);
+    virtual doublereal setPcorr(doublereal Pr, doublereal Tr); //std::vector<double>& PcorrParams);
     
         //! Initialize the transport operator with parameters from GasTransportParams object
     /*!

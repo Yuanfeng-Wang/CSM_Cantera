@@ -187,9 +187,10 @@ void HighPressureGasTransport::getBinaryDiffCoeffs(const size_t ld, doublereal* 
             }else {
                 // Otherwise, calculate the parameters for Takahashi correlation
                 //   by interpolating on Pr_ij:
-                setPcorr(Pr_ij, PcP);
+                // setPcorr(Pr_ij, PcP);
+                P_corr_ij = setPcorr(Pr_ij, Tr_ij);
                 // Calculate the correction factor:
-                P_corr_ij = PcP[0]*(1.0 - PcP[1]*pow(Tr_ij,-PcP[2]))*(1-PcP[3]*pow(Tr_ij,-PcP[4]));
+                // P_corr_ij = PcP[0]*(1.0 - PcP[1]*pow(Tr_ij,-PcP[2]))*(1-PcP[3]*pow(Tr_ij,-PcP[4]));
                 
                 // If the reduced temperature is too low, the correction factor
                 //  P_corr_ij will be < 0:
@@ -220,7 +221,7 @@ void HighPressureGasTransport::getMultiDiffCoeffs(const size_t ld, doublereal* c
     // Correct the binary diffusion coefficients for high-pressure effects; this
     // is basically the same routine used in 'getBinaryDiffCoeffs,' above:
     doublereal P_corr_ij, Tr_ij, Pr_ij;
-    std::vector<double> PcP(5);
+    //std::vector<double> PcP(5);
     double* x1 = DATA_PTR(m_spwork1);
     
     m_thermo->getMoleFractions(x1);
@@ -246,8 +247,8 @@ void HighPressureGasTransport::getMultiDiffCoeffs(const size_t ld, doublereal* c
             if (Pr_ij < 0.1) {
                 P_corr_ij = 1;
             }else {
-                setPcorr(Pr_ij, PcP);
-                P_corr_ij = PcP[0]*(1.0 - PcP[1]*pow(Tr_ij,-PcP[2]))*(1-PcP[3] \
+                P_corr_ij = setPcorr(Pr_ij, Tr_ij);//setPcorr(Pr_ij, PcP);
+                //P_corr_ij = PcP[0]*(1.0 - PcP[1]*pow(Tr_ij,-PcP[2]))*(1-PcP[3] \
                                 *pow(Tr_ij,-PcP[4]));
                 if (P_corr_ij<0) {
                     P_corr_ij = Tiny;
@@ -479,7 +480,7 @@ doublereal HighPressureGasTransport::FQ_i(doublereal Q, doublereal Tr, doublerea
 
 // Set value of parameter values for Takahashi correlation, by interpolating
 //   table of constants vs. Pr:
-void HighPressureGasTransport::setPcorr(doublereal Pr, std::vector<double>& PcP)
+doublereal HighPressureGasTransport::setPcorr(doublereal Pr, doublereal Tr) //std::vector<double>& PcP)
 {
     double Pr_lookup[17] = {0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.8, 1.0, 1.2, 1.4, \
         1.6, 1.8, 2.0, 2.5, 3.0, 4.0, 5.0};
@@ -516,12 +517,20 @@ void HighPressureGasTransport::setPcorr(doublereal Pr, std::vector<double>& PcP)
         frac = 1.0;
     }
     
-    // Interpolate parameter values and add to PcP vector:
+    /*// Interpolate parameter values and add to PcP vector:
     PcP[0] = (DP_Rt_lookup[Pr_i]*(1.0-frac)+DP_Rt_lookup[Pr_i+1]*frac);
     PcP[1] = (A_ij_lookup[Pr_i]*(1.0-frac)+A_ij_lookup[Pr_i+1]*frac);
     PcP[2] = (B_ij_lookup[Pr_i]*(1.0-frac)+B_ij_lookup[Pr_i+1]*frac);
     PcP[3] = (C_ij_lookup[Pr_i]*(1.0-frac)+C_ij_lookup[Pr_i+1]*frac);
-    PcP[4] = (E_ij_lookup[Pr_i]*(1.0-frac)+E_ij_lookup[Pr_i+1]*frac);
+    PcP[4] = (E_ij_lookup[Pr_i]*(1.0-frac)+E_ij_lookup[Pr_i+1]*frac);*/
+    
+    
+    doublereal P_corr_1 = DP_Rt_lookup[Pr_i]*(1.0 - A_ij_lookup[Pr_i]*pow(Tr,-B_ij_lookup[Pr_i]))*(1-C_ij_lookup[Pr_i] \
+                                                                                                   *pow(Tr,-E_ij_lookup[Pr_i]));
+    doublereal P_corr_2 = DP_Rt_lookup[Pr_i+1]*(1.0 - A_ij_lookup[Pr_i+1]*pow(Tr,-B_ij_lookup[Pr_i+1]))*(1-C_ij_lookup[Pr_i+1] \
+                                                                                                   *pow(Tr,-E_ij_lookup[Pr_i+1]));
+    
+    return P_corr_1*(1.0-frac) + P_corr_2*frac;
     
 }
     
