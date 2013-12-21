@@ -837,10 +837,10 @@ void TransportFactory::getTransportData(const std::vector<const XML_Node*> &xspe
             
         // Pitzer's acentric factor:
         double acentric = ctml::getFloat(node, "omega_ac");
-        if (acentric >= 0.0) {
+        if (acentric) {
             tr.w_ac[j] = acentric;
         } else {
-            throw TransportDBError(i, "negative acentric factor");
+            throw TransportDBError(i, "acentric factor not defined");
         }
         // Well-depth parameter in Kelvin (converted to Joules)
         double welldepth = ctml::getFloat(node, "LJ_welldepth");

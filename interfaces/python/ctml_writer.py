@@ -2177,9 +2177,10 @@ class RedlichKwongMFTP(phase):
                  transport = 'None',
                  options = []):
 
-        phase.__init__(self,name, 3, elements, species, 'none',
+        phase.__init__(self,name, 3, elements, species, reactions,
                        initial_state,options)
         self._pure = 0
+        self._kin = kinetics
         self._tr = transport
         self._activityCoefficients = activity_coefficients
 
@@ -2202,8 +2203,9 @@ class RedlichKwongMFTP(phase):
         if self._tr:
             t = ph.addChild('transport')
             t['model'] = self._tr
-        k = ph.addChild("kinetics")
-        k['model'] = 'none'
+        if self._kin:
+            k = ph.addChild("kinetics")
+            k['model'] = self._kin
 
 
 class redlich_kwong(phase):
