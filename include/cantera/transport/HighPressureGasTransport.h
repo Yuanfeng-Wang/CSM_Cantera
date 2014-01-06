@@ -68,6 +68,16 @@ public:
     
     virtual doublereal viscosity();
     
+        //! Initialize the transport operator with parameters from GasTransportParams object
+    /*!
+     *  @param tr  input GasTransportParams object
+     */
+    virtual bool initGas(GasTransportParams& tr);
+
+    friend class TransportFactory;
+
+protected:
+    
     virtual doublereal Tcrit_i(size_t i);
     
     virtual doublereal Pcrit_i(size_t i);
@@ -82,22 +92,8 @@ public:
     
     virtual doublereal setPcorr(doublereal Pr, doublereal Tr); //std::vector<double>& PcorrParams);
     
-        //! Initialize the transport operator with parameters from GasTransportParams object
-    /*!
-     *  @param tr  input GasTransportParams object
-     */
-    virtual bool initGas(GasTransportParams& tr);
-
-    friend class TransportFactory;
-
-protected:
-    
 public:
     
-
-protected:
-    
-//    bool m_debug;
 };
 }
 #endif
