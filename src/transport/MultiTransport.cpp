@@ -708,12 +708,18 @@ void MultiTransport::updateThermal_T()
      *       Chemkin has traditionally subtracted 1.5 here (SAND86-8246).
      *       The original Dixon-Lewis paper subtracted 1.5 here.
      */
-    const vector_fp& cp = ((IdealGasPhase*)m_thermo)->cp_R_ref();
+    //const vector_fp& cp = ((IdealGasPhase*)m_thermo)->cp_R_ref();
+    
+    vector_fp cp_R_all(m_thermo->nSpecies());
+    m_thermo->getCp_R_ref(&cp_R_all[0]);
+    const vector_fp& cp = cp_R_all;
+
+    
     for (size_t k = 0; k < m_nsp; k++) {
         m_cinternal[k] = cp[k] - 2.5;
     }
 
-    // m_thermo->update_T(m_update_thermal_T);
+    // m_thermo->update_T(m_update_thermal_T);  REMOVE THIS*/
     m_thermal_tlast = m_thermo->temperature();
 }
 
