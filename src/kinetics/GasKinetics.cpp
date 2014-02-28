@@ -510,7 +510,7 @@ void GasKinetics::updateROP()
 
     // copy rate coefficients into ropf
     copy(m_rfn.begin(), m_rfn.end(), m_ropf.begin());
-    
+
     // multiply ropf by enhanced 3b conc for all 3b rxns
     if (!concm_3b_values.empty()) {
         m_3b_concm.multiply(&m_ropf[0], &concm_3b_values[0]);
@@ -538,7 +538,7 @@ void GasKinetics::updateROP()
     // for reversible reactions, multiply ropr by concentration
     // products
     m_rxnstoich.multiplyRevProducts(&m_conc[0], &m_ropr[0]);
-    //m_revProductStoich.multiply(m_conc.begin(), ropr.begin());*/
+    //m_revProductStoich.multiply(m_conc.begin(), ropr.begin());
 
     for (size_t j = 0; j != m_ii; ++j) {
         m_ropnet[j] = m_ropf[j] - m_ropr[j];

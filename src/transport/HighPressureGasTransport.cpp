@@ -208,11 +208,6 @@ void HighPressureGasTransport::getBinaryDiffCoeffs(const size_t ld, doublereal* 
     
 void HighPressureGasTransport::getMultiDiffCoeffs(const size_t ld, doublereal* const d)
 {
-    
-    // Not currently implemented.  m_Lmatrix inversion returns NaN.  Nees to be
-    //   fixed.  --SCD - 2-28-2014
-    throw CanteraError("HighPressureTransport:getMultiDiffCoeffs()",
-                       "Routine not yet implemented");
     // Calculate the multi-component Stefan-Maxwell diffusion coefficients,
     // based on the Takahashi-correlation-corrected binary diffusion coefficients.
     
@@ -285,14 +280,14 @@ void HighPressureGasTransport::getMultiDiffCoeffs(const size_t ld, doublereal* c
     
     doublereal pres = m_thermo->pressure();
     doublereal prefactor = 16.0 * m_temp
-        * m_thermo->meanMolecularWeight()/(25.0*pres);
+    * m_thermo->meanMolecularWeight()/(25.0*pres);
     doublereal c;
     
     for (size_t i = 0; i < m_nsp; i++) {
         for (size_t j = 0; j < m_nsp; j++) {
             c = prefactor/m_mw[j];
             d[ld*j + i] = c*x1[i]*
-                             (m_Lmatrix(i,j) - m_Lmatrix(i,i));
+            (m_Lmatrix(i,j) - m_Lmatrix(i,i));
         }
     }
 }
@@ -311,6 +306,7 @@ doublereal HighPressureGasTransport::viscosity()
     double MW_L = m_mw[0];
     doublereal FP_mix_o = 0;
     doublereal FQ_mix_o = 0;
+    
     doublereal tKelvin = m_thermo->temperature();
     double Pvp_mix = m_thermo->satPressure(tKelvin);
     
@@ -407,7 +403,6 @@ doublereal HighPressureGasTransport::viscosity()
     // Return the viscosity:
     return Z2m*(1 + (FP_mix_o - 1)*pow(Y,-3))*(1 + (FQ_mix_o - 1)
             *(1/Y - 0.007*pow(log(Y),4)))/(ksi*FP_mix_o*FQ_mix_o);
-
     
 }
     
@@ -480,7 +475,7 @@ doublereal HighPressureGasTransport::Zcrit_i(size_t i)
 //   viscosity calculation:
 doublereal HighPressureGasTransport::FQ_i(doublereal Q, doublereal Tr, doublereal MW)
 {
-    return 1.22*pow(Q,0.15)*(1 + 0.00385*pow(pow(Tr - 12.,2.),1./MW)*fabs(Tr-12)/(Tr-12));
+    return 1.22*pow(Q,0.15)*(1 + 0.00385*pow(Tr - 12.,2./MW)*fabs(Tr-12)/(Tr-12));
 }
 
 // Set value of parameter values for Takahashi correlation, by interpolating
