@@ -2163,6 +2163,8 @@ class liquid_vapor(phase):
         k['model'] = 'none'
 
 class RedlichKwongMFTP(phase):
+    
+    
     """A multi-component fluid model for non-ideal gas fluids.
         """
 
@@ -2177,15 +2179,15 @@ class RedlichKwongMFTP(phase):
                  transport = 'None',
                  options = []):
 
-        phase.__init__(self,name, 3, elements, species, reactions,
+        phase.__init__(self, name, 3, elements, species, reactions,
                        initial_state,options)
         self._pure = 0
         self._kin = kinetics
         self._tr = transport
         self._activityCoefficients = activity_coefficients
 
-    def conc_dim(self):
-        return (0,0)
+    #def conc_dim(self):
+    #    return (0,0)
 
     def build(self, p):
         ph = phase.build(self,p)
