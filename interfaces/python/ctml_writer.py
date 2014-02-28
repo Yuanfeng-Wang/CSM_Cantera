@@ -2163,8 +2163,6 @@ class liquid_vapor(phase):
         k['model'] = 'none'
 
 class RedlichKwongMFTP(phase):
-    
-    
     """A multi-component fluid model for non-ideal gas fluids.
         """
 

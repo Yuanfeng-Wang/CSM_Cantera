@@ -713,13 +713,12 @@ void MultiTransport::updateThermal_T()
     vector_fp cp_R_all(m_thermo->nSpecies());
     m_thermo->getCp_R_ref(&cp_R_all[0]);
     const vector_fp& cp = cp_R_all;
-
     
     for (size_t k = 0; k < m_nsp; k++) {
         m_cinternal[k] = cp[k] - 2.5;
     }
 
-    // m_thermo->update_T(m_update_thermal_T);  REMOVE THIS*/
+    // m_thermo->update_T(m_update_thermal_T);
     m_thermal_tlast = m_thermo->temperature();
 }
 

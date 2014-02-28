@@ -208,8 +208,7 @@ void HighPressureGasTransport::getBinaryDiffCoeffs(const size_t ld, doublereal* 
     
 void HighPressureGasTransport::getMultiDiffCoeffs(const size_t ld, doublereal* const d)
 {
-    
-    // Not currently implemented.  m_Lmatrix inversion returns NaN.  Nees to be
+    // Not currently implemented.  m_Lmatrix inversion returns NaN.  Needs to be
     //   fixed.  --SCD - 2-28-2014
     throw CanteraError("HighPressureTransport:getMultiDiffCoeffs()",
                        "Routine not yet implemented");
@@ -285,14 +284,13 @@ void HighPressureGasTransport::getMultiDiffCoeffs(const size_t ld, doublereal* c
     
     doublereal pres = m_thermo->pressure();
     doublereal prefactor = 16.0 * m_temp
-        * m_thermo->meanMolecularWeight()/(25.0*pres);
+        *m_thermo->meanMolecularWeight()/(25.0*pres);
     doublereal c;
     
     for (size_t i = 0; i < m_nsp; i++) {
         for (size_t j = 0; j < m_nsp; j++) {
             c = prefactor/m_mw[j];
-            d[ld*j + i] = c*x1[i]*
-                             (m_Lmatrix(i,j) - m_Lmatrix(i,i));
+            d[ld*j + i] = c*x1[i]*(m_Lmatrix(i,j) - m_Lmatrix(i,i));
         }
     }
 }
@@ -384,7 +382,6 @@ doublereal HighPressureGasTransport::viscosity()
     if ((Tr_mix <= 1.0) && (Pr_mix < Pvp_mix/Pc_mix)) {
         doublereal alpha = 3.262 + 14.98*pow(Pr_mix,5.508);
         doublereal beta = 1.390 + 5.746*Pr_mix;
-        
         Z2m = 0.600 + 0.760*pow(Pr_mix,alpha) + (0.6990*pow(Pr_mix,beta) - 0.60)
             *(1- Tr_mix);
     } else if ((((Tr_mix > 1.0) && (Tr_mix < 40.0)) && (Pr_mix > 0.0)) && (Pr_mix <= 100.0)) {
@@ -407,8 +404,6 @@ doublereal HighPressureGasTransport::viscosity()
     // Return the viscosity:
     return Z2m*(1 + (FP_mix_o - 1)*pow(Y,-3))*(1 + (FQ_mix_o - 1)
             *(1/Y - 0.007*pow(log(Y),4)))/(ksi*FP_mix_o*FQ_mix_o);
-
-    
 }
     
 // Pure species critical properties - Tc, Pc, Vc, Zc:
