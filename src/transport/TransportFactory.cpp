@@ -836,7 +836,7 @@ void TransportFactory::getTransportData(const std::vector<const XML_Node*> &xspe
         }
             
         // Pitzer's acentric factor:
-        double acentric = ctml::getFloat(node, "omega_ac");
+        double acentric = ctml::getFloat(node, "acentric_factor");
         if (acentric) {
             tr.w_ac[j] = acentric;
         } else {
@@ -925,7 +925,7 @@ void TransportFactory::getTransportData(const std::vector<const XML_Node*> &xspe
             dipole = ctml::getFloat(tr, "dipoleMoment");
             polar = ctml::getFloat(tr, "polarizability");
             rot = ctml::getFloat(tr, "rotRelax");
-            w_ac = ctml::getFloat(tr, "omega_ac");
+            w_ac = ctml::getFloat(tr, "acentric_factor");
 
             GasTransportData data;
             data.speciesName = name;

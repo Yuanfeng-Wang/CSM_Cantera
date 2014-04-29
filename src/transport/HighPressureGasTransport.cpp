@@ -379,23 +379,33 @@ doublereal HighPressureGasTransport::viscosity()
            + 0.340*exp(-4.058*Tr_mix)+0.018)*FP_mix_o*FQ_mix_o;
     
     // Calculate Z2m:
-    if ((Tr_mix <= 1.0) && (Pr_mix < Pvp_mix/Pc_mix)) {
-        doublereal alpha = 3.262 + 14.98*pow(Pr_mix,5.508);
-        doublereal beta = 1.390 + 5.746*Pr_mix;
-        Z2m = 0.600 + 0.760*pow(Pr_mix,alpha) + (0.6990*pow(Pr_mix,beta) - 0.60)
-            *(1- Tr_mix);
-    } else if ((((Tr_mix > 1.0) && (Tr_mix < 40.0)) && (Pr_mix > 0.0)) && (Pr_mix <= 100.0)) {
-        doublereal a_fac = 0.001245*exp(5.1726*pow(Tr_mix,-0.3286))/Tr_mix;
-        doublereal b_fac = a_fac*(1.6553*Tr_mix - 1.2723);
-        doublereal c_fac = 0.4489*exp(3.0578*pow(Tr_mix,-37.7332))/Tr_mix;
-        doublereal d_fac = 1.7368*exp(2.2310*pow(Tr_mix,-7.6351))/Tr_mix;
-        doublereal f_fac = 0.9425*exp(-0.1853*pow(Tr_mix,0.4489));
+    if (Tr_mix <= 1.0){
+        if (Pr_mix < Pvp_mix/Pc_mix) {
+            doublereal alpha = 3.262 + 14.98*pow(Pr_mix,5.508);
+            doublereal beta = 1.390 + 5.746*Pr_mix;
+            Z2m = 0.600 + 0.760*pow(Pr_mix,alpha) + (0.6990*pow(Pr_mix,beta) -
+                0.60)*(1- Tr_mix);
+        } else {
+            throw CanteraError("HighPressureGasTransport::viscosity",
+                               "State is outside the limits of the Lucas model, Tr <= 1");
+        }
+    } else if ((Tr_mix > 1.0) && (Tr_mix < 40.0)) {
+        if ((Pr_mix > 0.0) && (Pr_mix <= 100.0)) {
+            doublereal a_fac = 0.001245*exp(5.1726*pow(Tr_mix,-0.3286))/Tr_mix;
+            doublereal b_fac = a_fac*(1.6553*Tr_mix - 1.2723);
+            doublereal c_fac = 0.4489*exp(3.0578*pow(Tr_mix,-37.7332))/Tr_mix;
+            doublereal d_fac = 1.7368*exp(2.2310*pow(Tr_mix,-7.6351))/Tr_mix;
+            doublereal f_fac = 0.9425*exp(-0.1853*pow(Tr_mix,0.4489));
         
-        Z2m = Z1m*(1 + a_fac*pow(Pr_mix,1.3088)/(b_fac*pow(Pr_mix,f_fac)
+            Z2m = Z1m*(1 + a_fac*pow(Pr_mix,1.3088)/(b_fac*pow(Pr_mix,f_fac)
                         + pow(1+c_fac*pow(Pr_mix,d_fac),-1)));
+        } else {
+            throw CanteraError("HighPressureGasTransport::viscosity",
+                           "State is outside the limits of the Lucas model, 1.0 < Tr < 40");
+        }
     } else {
         throw CanteraError("HighPressureGasTransport::viscosity",
-                           "State is outside the limits of the Lucas model");
+                           "State is outside the limits of the Lucas model, Tr > 40");
     }
     
     // Calculate Y:
