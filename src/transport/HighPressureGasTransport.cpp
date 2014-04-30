@@ -61,6 +61,8 @@ double HighPressureGasTransport::thermalConductivity()
     
     m_thermo -> getPartialMolarVolumes(&V_k[0]);
     
+    doublereal L_i_min = pow(100,100);
+    
     for (size_t i = 0; i < m_nsp; i++) {
         doublereal Tc_i = Tcrit_i(i);
         doublereal Vc_i = Vcrit_i(i);
@@ -84,6 +86,7 @@ double HighPressureGasTransport::thermalConductivity()
         doublereal H = sqrt(f_fac*16.04/m_mw[i])*pow(h_fac,-2./3.);
         doublereal mu_i = mu_0*H*m_mw[i]*c1;
         L_i[i] = mu_i*1.32*GasConstant*(cp_0_R[i] - 2.5)/m_mw[i];
+        L_i_min = min(L_i_min,L_i[i]);
         // Calculate variables for density-dependent component:
         doublereal theta_s = 1 + (m_w_ac[i] - 0.011)*(0.09057 - 0.86276*log(T_p) \
             + (0.31664 - 0.46568/T_p)*(V_p - 0.5));
@@ -99,7 +102,7 @@ double HighPressureGasTransport::thermalConductivity()
     for (size_t i = 0; i < m_nsp; i++) {
         for (size_t j = 0; j < m_nsp; j++) {
             // Density-independent component:
-            doublereal L_ij = 2*L_i[i]*L_i[j]/(L_i[i] + L_i[j]);
+            doublereal L_ij = 2*L_i[i]*L_i[j]/(L_i[i] + L_i[j] + Tiny);
             Lprime_m += x1[i]*x1[j]*L_ij;
             // Additional variables for density-dependent component:
             doublereal f_ij = sqrt(f_i[i]*f_i[j]);
@@ -128,7 +131,7 @@ double HighPressureGasTransport::thermalConductivity()
     doublereal H_m = sqrt(f_m*16.04/mw_m)*pow(h_m,-2./3.);
     doublereal Lstar_m = H_m*(L_1m + L_2m + L_3m);
 
-    return Lprime_m + Lstar_m;
+    return Lprime_m + Lstar_m;  //Lstar_m is ok.
     
 }
 
